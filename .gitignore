@@ -1,0 +1,9 @@
+# Default ignored files
+/workspace.xml
+/misc.xml
+/compiler.xml
+/uiDesigner.xml
+/libs
+/.idea
+/sqlcmdproject.iml
+/target
