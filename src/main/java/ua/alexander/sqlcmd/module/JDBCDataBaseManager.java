@@ -14,7 +14,7 @@ public class JDBCDataBaseManager implements DataBaseManager {
                 throw new RuntimeException("Please add you PosgreSQL Driver to the project!",e);
             }
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + database ,user ,password);
-            Statement stmt = connection.createStatement();
+            System.out.println("\u001B[34m" + "Success!" + "\u001B[0m");
         } catch (SQLException e) {
             connection = null;
             throw new RuntimeException(String.format("Can't get connection to database '%s', with the user: '%s'", database, user),e);

@@ -1,16 +1,18 @@
 package ua.alexander.sqlcmd.module;
 
+import ua.alexander.sqlcmd.controller.MainController;
+import ua.alexander.sqlcmd.view.Console;
+import ua.alexander.sqlcmd.view.View;
+
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        final String database = "sqlcmd";
-        final String user = "postgres";
-        final String password = "1234";
+        View view = new Console();
+        DataBaseManager dbManager = new JDBCDataBaseManager();
+        MainController mc = new MainController(view, dbManager);
 
-        final String ANSI_RED = "\u001B[31m";
-        System.out.println(ANSI_RED + "This text has red text but a default background!");
-
+        mc.connectDB();
     }
 }
 
