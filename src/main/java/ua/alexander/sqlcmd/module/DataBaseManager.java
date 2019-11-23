@@ -3,7 +3,7 @@ package ua.alexander.sqlcmd.module;
 public interface DataBaseManager {
     void connect(String database, String user, String password);
 
-    String [] getTableNames(String tableName);
+    String [] getTableNames();
 
     Data[] getTableData(String tableName);
 

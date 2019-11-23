@@ -15,9 +15,9 @@ public class JDBCDataBaseManagerTest {
 
     @Test
     public void testGetTableNames() {
-        String[] tableNames = jdbcDBManager.getTableNames("user");
+        String[] tableNames = jdbcDBManager.getTableNames();
         System.out.println(Arrays.toString(tableNames));
-        assertEquals("[user]", Arrays.toString(tableNames));
+        assertEquals("[user, test]", Arrays.toString(tableNames));
 
     }
 

@@ -17,6 +17,20 @@ public class MainController {
 
     public void run() {
         connectDB();
+        view.type("Please enter you command! Type 'help' to see available commands.");
+        String input = view.read();
+        switch (input){
+            case "help": help();
+            case "list": getList();
+        }
+    }
+
+    private void getList() {
+       String [] list = dbManager.getTableNames();
+    }
+
+    private void help() {
+        
     }
 
     public void connectDB() {
@@ -24,9 +38,9 @@ public class MainController {
         while (true) {
             try {
                 String input = view.read();
-                String[] data = input.split("[,]");
+                String[] data = input.split("[/]");
                 if (data.length != 3) {
-                    throw new IllegalArgumentException("Something is missing... Quantity of paramerters is " + data.length + " but you need 3");
+                    throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length + " ,but you need 3");
                 }
                 String database = data[0];
                 String username = data[1];
@@ -46,4 +60,6 @@ public class MainController {
         }
         view.type("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!");
     }
+
+    
 }

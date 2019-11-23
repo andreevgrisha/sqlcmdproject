@@ -1,6 +1,7 @@
 package ua.alexander.sqlcmd.module;
 
 import java.sql.*;
+import java.util.Arrays;
 
 public class JDBCDataBaseManager implements DataBaseManager {
     private Connection connection;
@@ -22,16 +23,18 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
 
-    public String [] getTableNames(String tableName){
+    public String [] getTableNames(){
         try {
             Statement statement = connection.createStatement();
-            String [] tables = new String[getColumnCount(tableName)];
-
-            ResultSet resultSet = statement.executeQuery("SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema = 'public'");
+            ResultSet resultSet = statement.executeQuery(String.format("SELECT table_name FROM information_schema.tables " +
+                    "WHERE table_type = 'BASE TABLE' AND table_schema = 'public'"));
+            String[] tables = new String [10];
             int index = 0;
             while(resultSet.next()){
                 tables[index++] = resultSet.getString("table_name");
             }
+            tables = Arrays.copyOf(tables, index, String[].class);
+            resultSet.close();
             statement.close();
             return tables;
         } catch (SQLException e) {
