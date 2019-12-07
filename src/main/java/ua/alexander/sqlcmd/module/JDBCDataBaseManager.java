@@ -72,6 +72,30 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
     }
 
+    @Override
+    public String [] getTableColumnNames(String tableName) {
+        try {
+            Statement statement = connection.createStatement();
+            int size = getColumnCount(tableName);
+            String[] names = new String[10];
+            ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM INFORMATION_SCHEMA." +
+                    "COLUMNS WHERE TABLE_NAME = '%s'", tableName));
+
+            int index = 0;
+            while(resultSet.next()){
+                names[index++] = resultSet.getString("column_name");
+            }
+            names = Arrays.copyOf(names, index, String[].class);
+            resultSet.close();
+            statement.close();
+            return names;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return new String[0];
+        }
+
+    }
 
 
     public void clearTable(String tableName){

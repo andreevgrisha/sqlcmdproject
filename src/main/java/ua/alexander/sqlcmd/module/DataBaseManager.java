@@ -7,6 +7,8 @@ public interface DataBaseManager {
 
     Data[] getTableData(String tableName);
 
+    String [] getTableColumnNames(String tableName);
+
     void clearTable(String tableName);
 
     void insertData(String tableName,Data input);
