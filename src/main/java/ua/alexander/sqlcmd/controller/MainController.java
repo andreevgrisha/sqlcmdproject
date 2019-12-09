@@ -1,93 +1,37 @@
 package ua.alexander.sqlcmd.controller;
 
-import ua.alexander.sqlcmd.module.Data;
+import ua.alexander.sqlcmd.controller.command.*;
 import ua.alexander.sqlcmd.module.DataBaseManager;
 import ua.alexander.sqlcmd.module.JDBCDataBaseManager;
 import ua.alexander.sqlcmd.view.Console;
 import ua.alexander.sqlcmd.view.View;
 
-import java.util.Arrays;
 
 public class MainController {
 
     private View view;
     private DataBaseManager dbManager;
+    private Command[] commands;
 
     public MainController(View view, DataBaseManager dbManager) {
         this.view = new Console();
         this.dbManager = new JDBCDataBaseManager();
+        this.commands = new Command[]{new Exit(view), new Help(view), new List(view, dbManager),
+                new Find(view, dbManager), new Unsupported(view)};
     }
 
     public void run() {
         connectDB();
         view.type("Please enter you command! Type 'help' to see available commands.");
-        while (true) {
+        while(true){
             String input = view.read();
-            if (input.equals("help")) {
-                help();
-            } else if (input.equals("list")) {
-                printList();
-            } else if (input.equals("exit")) {
-                view.type("See ya!");
-                System.exit(0);
-            } else if (input.startsWith("find:")) {
-                find(input);
+            for(Command command : commands) {
+                if (command.processAble(input)) {
+                    command.execute(input);
+                    break;
+                }
             }
-            else{
-                view.type("Sorry, such method doesnt exist!");
-            }
-
         }
-    }
-
-    private void find(String input) {
-        String [] data = input.split("[:]");
-        String tableName = data[1];
-
-        String [] tableColumns = dbManager.getTableColumnNames(tableName);
-        drawHeader(tableColumns);
-
-        Data[] tableData = dbManager.getTableData(tableName);
-        drawTable(tableData);
-
-    }
-
-    private void drawTable(Data[] tableData) {
-        for(Data row : tableData){
-            printRow(row);
-        }
-    }
-
-    private void printRow(Data row) {
-        String result = "|";
-        for(Object value : row.getValues()){
-            result += value + "|";
-        }
-        view.type(result);
-    }
-
-    private void drawHeader(String[] tableColumns) {
-        String result = "|";
-        for(String name : tableColumns){
-            result += name + "|";
-        }
-        view.type("-----------------------");
-        view.type(result);
-        view.type("-----------------------");
-    }
-
-    private void printList() {
-        String[] list = dbManager.getTableNames();
-        System.out.println(Arrays.toString(list));
-    }
-
-    private void help() {
-        view.type("There are such commands:");
-        view.type("\tlist -  to get all table names of the database you are connected to.");
-        view.type("\thelp - to see all commands available.");
-        view.type("\texit - to shut down the program.");
-        view.type("\tfind:'your table name' - to draw the table");
-
     }
 
     public void connectDB() {
@@ -103,6 +47,7 @@ public class MainController {
                 String username = data[1];
                 String password = data[2];
                 dbManager.connect(database, username, password);
+                view.type("\u001B[34m" + "Success!" + "\u001B[0m");
                 break;
             } catch (Exception e) {
                 printError(e);

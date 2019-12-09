@@ -6,22 +6,19 @@ import java.util.Arrays;
 public class JDBCDataBaseManager implements DataBaseManager {
     private Connection connection;
 
-
     public void connect(String database, String user, String password)  {
         try {
-            try {
-                Class.forName("org.postgresql.Driver");
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Please add you PosgreSQL Driver to the project!",e);
-            }
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Please add you PosgreSQL Driver to the project!",e);
+        }
+        try {
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + database ,user ,password);
-            System.out.println("\u001B[34m" + "Success!" + "\u001B[0m");
         } catch (SQLException e) {
             connection = null;
             throw new RuntimeException(String.format("Can't get connection to database '%s', with the user: '%s'", database, user),e);
         }
     }
-
 
     public String [] getTableNames(){
         try {

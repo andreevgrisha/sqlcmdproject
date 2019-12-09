@@ -6,12 +6,11 @@ import ua.alexander.sqlcmd.view.View;
 
 import java.sql.SQLException;
 
+
 public class Main {
     public static void main(String[] args) throws SQLException {
-        View view = new Console();
         DataBaseManager dbManager = new JDBCDataBaseManager();
-        MainController mc = new MainController(view, dbManager);
-        mc.run();
+        dbManager.connect("sqlcmd","postgres","1234");
     }
 }
 
