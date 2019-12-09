@@ -14,4 +14,6 @@ public interface DataBaseManager {
     void insertData(String tableName,Data input);
 
     void updateTableData(String tableName, Data updatedValue, int id);
+
+    boolean isConnected();
 }

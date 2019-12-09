@@ -142,6 +142,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
     }
 
+    @Override
+    public boolean isConnected() {
+        return connection != null;
+    }
+
     public int getColumnCount(String tableName) throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet resultSetCount = statement.executeQuery(String.format("SELECT COUNT (*) FROM public.%s", tableName));
