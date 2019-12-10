@@ -2,6 +2,7 @@ package ua.alexander.sqlcmd.controller;
 
 import ua.alexander.sqlcmd.controller.command.*;
 import ua.alexander.sqlcmd.module.DataBaseManager;
+import ua.alexander.sqlcmd.module.JDBCDataBaseManager;
 import ua.alexander.sqlcmd.view.Console;
 import ua.alexander.sqlcmd.view.View;
 
@@ -9,14 +10,16 @@ import ua.alexander.sqlcmd.view.View;
 public class MainController {
     private View view;
     private Command[] commands;
+    private DataBaseManager dbManager;
 
     public MainController(View view, DataBaseManager dbManager) {
         this.view = new Console();
+        this.dbManager = new JDBCDataBaseManager();
         this.commands = new Command[]{
                 new Connect(view,dbManager),
-                new IsConnected(view,dbManager),
                 new Exit(view),
                 new Help(view),
+                new IsConnected(view,dbManager),
                 new List(view, dbManager),
                 new Find(view, dbManager),
                 new Unsupported(view)
@@ -33,7 +36,7 @@ public class MainController {
                     break;
                 }
             }
-            view.type("Please enter you command! Type 'help' to see available commands.");
+
         }
     }
 }
