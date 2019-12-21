@@ -5,7 +5,7 @@ import ua.alexander.sqlcmd.view.View;
 
 
 public class Connect implements Command {
-    private static final  String COMMAND_SAMPLE = "connect:sqlcmd,postgres,1234";
+    private static final String COMMAND_SAMPLE = "connect:sqlcmd,postgres,1234";
 
     private View view;
     private DataBaseManager dbManager;

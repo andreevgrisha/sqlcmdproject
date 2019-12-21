@@ -5,6 +5,7 @@ import ua.alexander.sqlcmd.module.DataBaseManager;
 import ua.alexander.sqlcmd.view.View;
 
 public class Find implements Command {
+    private static final String COMMAND_SAMPLE = "find:user";
     private DataBaseManager dbManager;
     private View view;
 
@@ -20,15 +21,28 @@ public class Find implements Command {
 
     @Override
     public void execute(String command) {
-        String [] data = command.split("[:]");
-        String tableName = data[1];
+        try {
+            String[] data = command.split("[:]");
 
-        String [] tableColumns = dbManager.getTableColumnNames(tableName);
-        drawHeader(tableColumns);
+            if (data.length != getParameterLength()) {
+                throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length +
+                        " ,but you need " + getParameterLength());
+            }
+            String tableName = data[1];
 
-        Data[] tableData = dbManager.getTableData(tableName);
-        drawTable(tableData);
+            String[] tableColumns = dbManager.getTableColumnNames(tableName);
+            drawHeader(tableColumns);
+
+            Data[] tableData = dbManager.getTableData(tableName);
+            drawTable(tableData);
+        }catch(Exception ex){
+            printError(ex);
+        }
     }
+    private int getParameterLength() {
+        return COMMAND_SAMPLE.split("[:]").length;
+    }
+
 
     private void drawTable(Data[] tableData) {
         for(Data row : tableData){
@@ -52,5 +66,13 @@ public class Find implements Command {
         view.type("|-----------------------|");
         view.type(result);
         view.type("|-----------------------|");
+    }
+
+    private void printError(Exception e) {
+        String message = e.getMessage();
+        if (e.getCause() != null) {
+            message += " " + e.getCause().getMessage();
+        }
+        view.type("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!");
     }
 }
