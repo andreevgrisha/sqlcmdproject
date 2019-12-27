@@ -31,12 +31,14 @@ public class Find implements Command {
             String tableName = data[1];
 
             String[] tableColumns = dbManager.getTableColumnNames(tableName);
-            drawHeader(tableColumns);
 
-            Data[] tableData = dbManager.getTableData(tableName);
-            drawTable(tableData);
+            if(tableColumns.length != 0) {
+                drawHeader(tableColumns);
+                Data[] tableData = dbManager.getTableData(tableName);
+                drawTable(tableData);
+            }
         }catch(Exception ex){
-            printError(ex);
+            dbManager.printError(ex);
         }
     }
     private int getParameterLength() {
@@ -66,13 +68,5 @@ public class Find implements Command {
         view.type("|-----------------------|");
         view.type(result);
         view.type("|-----------------------|");
-    }
-
-    private void printError(Exception e) {
-        String message = e.getMessage();
-        if (e.getCause() != null) {
-            message += " " + e.getCause().getMessage();
-        }
-        view.type("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!");
     }
 }

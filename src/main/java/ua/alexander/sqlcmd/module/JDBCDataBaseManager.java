@@ -60,7 +60,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
             }
             return output;
         } catch (SQLException e) {
-            e.printStackTrace();
+            String message = e.getMessage();
+            System.out.println(message);
             return null;
         }
     }
@@ -81,10 +82,9 @@ public class JDBCDataBaseManager implements DataBaseManager {
             return names;
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            return new String[0];
+            String [] message = e.getMessage().split("[\n]");
+            throw new RuntimeException(message[0]);
         }
-
     }
 
 
@@ -128,14 +128,10 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
     }
 
-    @Override
-    public boolean isConnected() {
-        return connection != null;
-    }
-
     public int getColumnCount(String tableName) throws SQLException {
         try (Statement statement = connection.createStatement();
-             ResultSet resultSetCount = statement.executeQuery(String.format("SELECT COUNT (*) FROM public.%s", tableName))) {
+             ResultSet resultSetCount = statement.executeQuery(String.format("SELECT COUNT (*) FROM public.%s", tableName)))
+        {
             resultSetCount.next();
             int size = resultSetCount.getInt(1);
             resultSetCount.close();
@@ -160,6 +156,20 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
         values = values.substring(0, values.length() - 1);
         return values;
+    }
+
+    @Override
+    public void printError(Exception e) {
+        String message = e.getMessage();
+        if (e.getCause() != null) {
+            message += " " + e.getCause().getMessage();
+        }
+        System.out.println(("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!"));
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connection != null;
     }
 
 }

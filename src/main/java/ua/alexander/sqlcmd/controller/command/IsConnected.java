@@ -19,6 +19,6 @@ public class IsConnected implements Command {
     @Override
     public void execute(String command) {
         view.type(String.format("Sorry, but you can't use command '%s' before you connect the database. " +
-                "To connect database type: connect:database,username,password",command));
+                "To connect database type 'connect:database,username,password'",command));
     }
 }

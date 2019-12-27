@@ -36,7 +36,7 @@ public class Connect implements Command {
             view.type("\u001B[34m" + "Success!" + "\u001B[0m");
             view.type("Please enter you command! Type 'help' to see available commands.");
         } catch (Exception e) {
-            printError(e);
+            dbManager.printError(e);
         }
 
     }
@@ -54,13 +54,5 @@ public class Connect implements Command {
             return new String[0];
         }
         return refactored;
-    }
-
-    private void printError(Exception e) {
-        String message = e.getMessage();
-        if (e.getCause() != null) {
-            message += " " + e.getCause().getMessage();
-        }
-        view.type("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!");
     }
 }
