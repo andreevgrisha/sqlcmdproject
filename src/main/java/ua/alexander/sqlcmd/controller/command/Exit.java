@@ -17,6 +17,6 @@ public class Exit implements Command {
     @Override
     public void execute(String command) {
         view.type("See ya!");
-        System.exit(0);
+        throw new ExitException();
     }
 }

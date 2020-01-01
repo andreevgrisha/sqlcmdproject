@@ -27,6 +27,14 @@ public class MainController {
     }
 
     public void run() {
+        try {
+            work();
+        }catch(ExitException e){
+
+        }
+    }
+
+    private void work() {
         view.type("Hi, friend! Please insert database name, username and password. Format: connect:database,username,password");
         while(true){
             String input = view.read();

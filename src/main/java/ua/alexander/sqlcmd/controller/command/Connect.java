@@ -34,7 +34,7 @@ public class Connect implements Command {
             String password = data[2];
             dbManager.connect(database, username, password);
             view.type("\u001B[34m" + "Success!" + "\u001B[0m");
-            view.type("Please enter you command! Type 'help' to see available commands.");
+            view.type("Please enter your command! Type 'help' to see available commands.");
         } catch (Exception e) {
             dbManager.printError(e);
         }
