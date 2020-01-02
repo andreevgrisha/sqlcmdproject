@@ -37,9 +37,9 @@ public abstract class DataBaseManagerTest {
         jdbcDBManager.clearTable("user");
 
         Data input = new Data();
-        input.add("id", 8);
-        input.add("username", "Andreev");
-        input.add("password", "qwerty");
+        input.put("id", 8);
+        input.put("username", "Andreev");
+        input.put("password", "qwerty");
         jdbcDBManager.insertData("user", input);
 
         Data[] users = jdbcDBManager.getTableData("user");
@@ -63,13 +63,13 @@ public abstract class DataBaseManagerTest {
         jdbcDBManager.clearTable("user");
 
         Data input = new Data();
-        input.add("id", 8);
-        input.add("username", "Andreev");
-        input.add("password", "qwerty");
+        input.put("id", 8);
+        input.put("username", "Andreev");
+        input.put("password", "qwerty");
         jdbcDBManager.insertData("user",input);
 
         Data update = new Data();
-        update.add("password", "qwerty1234");
+        update.put("password", "qwerty1234");
         jdbcDBManager.updateTableData("user", update ,8);
 
         Data[] users = jdbcDBManager.getTableData("user");

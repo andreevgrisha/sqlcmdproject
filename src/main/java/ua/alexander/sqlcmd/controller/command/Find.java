@@ -32,29 +32,31 @@ public class Find implements Command {
 
             String[] tableColumns = dbManager.getTableColumnNames(tableName);
 
-            if(tableColumns.length != 0) {
+            if (tableColumns.length != 0) {
                 drawHeader(tableColumns);
                 Data[] tableData = dbManager.getTableData(tableName);
                 drawTable(tableData);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             dbManager.printError(ex);
         }
     }
+
     private int getParameterLength() {
         return COMMAND_SAMPLE.split("[:]").length;
     }
 
 
     private void drawTable(Data[] tableData) {
-        for(Data row : tableData){
+        for (Data row : tableData) {
             printRow(row);
         }
+        view.type("|-----------------------|");
     }
 
     private void printRow(Data row) {
         String result = "|";
-        for(Object value : row.getValues()){
+        for (Object value : row.getValues()) {
             result += value + "|";
         }
         view.type(result);
@@ -62,7 +64,7 @@ public class Find implements Command {
 
     private void drawHeader(String[] tableColumns) {
         String result = "|";
-        for(String name : tableColumns){
+        for (String name : tableColumns) {
             result += name + "|";
         }
         view.type("|-----------------------|");

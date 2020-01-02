@@ -17,6 +17,5 @@ public interface DataBaseManager {
 
     boolean isConnected();
 
-   void printError(Exception e);
-
+     void printError(Exception e);
 }

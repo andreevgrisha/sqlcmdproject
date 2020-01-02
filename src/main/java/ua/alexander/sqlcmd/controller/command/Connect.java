@@ -23,7 +23,7 @@ public class Connect implements Command {
     @Override
     public void execute(String command) {
         try {
-            String [] data = getCommandRefactored(command);
+            String[] data = getCommandRefactored(command);
 
             if (data.length != getParameterLength()) {
                 throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length +
@@ -45,12 +45,12 @@ public class Connect implements Command {
         return COMMAND_SAMPLE.split("[,]").length;
     }
 
-    private String[] getCommandRefactored(String command){
-        String [] refactored = command.split("[,]");
-        String [] buffer = refactored[0].split("[:]");
-        if(buffer.length == 2){
+    private String[] getCommandRefactored(String command) {
+        String[] refactored = command.split("[,]");
+        String[] buffer = refactored[0].split("[:]");
+        if (buffer.length == 2) {
             refactored[0] = buffer[1];
-        }else{
+        } else {
             return new String[0];
         }
         return refactored;

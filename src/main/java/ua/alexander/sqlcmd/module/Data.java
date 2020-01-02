@@ -24,7 +24,7 @@ public class Data {
     public MetaData[] data = new MetaData[100]; // TODO remove magic number 100
     public int index = 0;
 
-    public void add(String name, Object value){
+    public void put(String name, Object value){
         data[index++] = new MetaData(name, value);
     }
 

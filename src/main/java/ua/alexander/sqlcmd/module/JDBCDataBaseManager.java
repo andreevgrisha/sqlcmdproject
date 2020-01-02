@@ -41,36 +41,11 @@ public class JDBCDataBaseManager implements DataBaseManager {
         }
     }
 
-
-
-    public Data[] getTableData(String tableName) {
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM public.%s", tableName)))
-        {
-            int size = getColumnCount(tableName);
-            ResultSetMetaData resultSetMD = resultSet.getMetaData();
-            Data[] output = new Data[size];
-            int index = 0;
-            while(resultSet.next()){
-                Data data = new Data();
-                output[index++] = data;
-                for(int i = 1; i <= resultSetMD.getColumnCount(); i++) {
-                    data.add(resultSetMD.getColumnName(i), resultSet.getObject(i));
-                }
-            }
-            return output;
-        } catch (SQLException e) {
-            String message = e.getMessage();
-            System.out.println(message);
-            return null;
-        }
-    }
-
     @Override
     public String [] getTableColumnNames(String tableName) {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM INFORMATION_SCHEMA." +
-                "COLUMNS WHERE TABLE_NAME = '%s'", tableName)))
+                     "COLUMNS WHERE TABLE_NAME = '%s'", tableName)))
         {
             int size = getColumnCount(tableName);
             String[] names = new String[10];
@@ -88,12 +63,36 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
 
+    public Data[] getTableData(String tableName) {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM public.%s", tableName)))
+        {
+            int size = getColumnCount(tableName);
+            ResultSetMetaData resultSetMD = resultSet.getMetaData();
+            Data[] output = new Data[size];
+            int index = 0;
+            while(resultSet.next()){
+                Data data = new Data();
+                output[index++] = data;
+                for(int i = 1; i <= resultSetMD.getColumnCount(); i++) {
+                    data.put(resultSetMD.getColumnName(i), resultSet.getObject(i));
+                }
+            }
+            return output;
+        } catch (SQLException e) {
+            String message = e.getMessage();
+            System.out.println(message);
+            return null;
+        }
+    }
+
+
     public void clearTable(String tableName){
         try  (Statement statement = connection.createStatement())
         {
             statement.executeUpdate(String.format("DELETE FROM public.%s", tableName));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -113,8 +112,8 @@ public class JDBCDataBaseManager implements DataBaseManager {
 
     public void updateTableData(String tableName, Data updatedValue, int id){
         String updatedNames = formatNames(updatedValue, "%s = ?,");
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE public." + tableName +
-                " SET " + updatedNames + " WHERE id = ?"))
+        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format("UPDATE public.%s " +
+                "SET %s WHERE id = ?", tableName, updatedNames)))
         {
             int index = 1;
             for(Object value : updatedValue.getValues()) {
@@ -159,17 +158,17 @@ public class JDBCDataBaseManager implements DataBaseManager {
     }
 
     @Override
+    public boolean isConnected() {
+        return connection != null;
+    }
+
+    @Override
     public void printError(Exception e) {
         String message = e.getMessage();
         if (e.getCause() != null) {
             message += " " + e.getCause().getMessage();
         }
         System.out.println(("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!"));
-    }
-
-    @Override
-    public boolean isConnected() {
-        return connection != null;
     }
 
 }

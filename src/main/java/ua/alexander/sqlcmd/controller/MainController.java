@@ -20,8 +20,10 @@ public class MainController {
                 new Exit(view),
                 new Help(view),
                 new IsConnected(view,dbManager),
+                new Insert(view, dbManager),
                 new List(view, dbManager),
                 new Find(view, dbManager),
+                new Clear(view, dbManager),
                 new Unsupported(view)
         };
     }
@@ -42,12 +44,12 @@ public class MainController {
                 new Exit(view).execute("");
             }
             for(Command command : commands) {
-                if (command.processAble(input)) {
-                    command.execute(input);
-                    break;
+                    if (command.processAble(input)) {
+                        command.execute(input);
+                        break;
+                    }
                 }
             }
 
         }
-    }
 }
