@@ -21,19 +21,19 @@ public class Insert implements Command {
     @Override
     public void execute(String command) {
         try {
-            String[] input = command.split("[:]");
-            if (input.length % 2 != 0) {
+            String[] input = getCommandRefactored(command);
+            if (input.length % 2 != 1) {
                 throw new IllegalArgumentException(String.format("Some parameters are missing. " +
-                        "The command should look like that: " +
-                        "'insert|tableName|column1|value1|column2|value2|...|columnN|valueN', " +
+                        "The command should look like that: \n" +
+                        "'insert:tableName,column1,value1,column2,value2...columnN,valueN', " +
                         "but your is: '%s'", command));
             }
-            String tableName = input[1];
+            String tableName = input[0];
 
             Data data = new Data();
-            for (int index = 1; index < (input.length / 2); index++) {
-                String columnName = input[index * 2];
-                String value = input[index * 2 + 1];
+            for (int index = 1; index < input.length; index = index + 2) {
+                String columnName = input[index];
+                String value = input[index + 1];
 
                 data.put(columnName, value);
             }
@@ -43,5 +43,16 @@ public class Insert implements Command {
         }catch (Exception ex) {
             dbManager.printError(ex);
         }
+    }
+
+    private String[] getCommandRefactored(String command) {
+        String[] refactored = command.split("[,]");
+        String[] buffer = refactored[0].split("[:]");
+        if (buffer.length == 2) {
+            refactored[0] = buffer[1];
+        } else {
+            return new String[0];
+        }
+        return refactored;
     }
 }

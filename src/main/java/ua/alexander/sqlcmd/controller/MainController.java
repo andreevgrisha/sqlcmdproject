@@ -32,7 +32,7 @@ public class MainController {
         try {
             work();
         }catch(ExitException e){
-
+            view.type("See ya!");
         }
     }
 
@@ -40,9 +40,6 @@ public class MainController {
         view.type("Hi, friend! Please insert database name, username and password. Format: connect:database,username,password");
         while(true){
             String input = view.read();
-            if(input == null){
-                new Exit(view).execute("");
-            }
             for(Command command : commands) {
                     if (command.processAble(input)) {
                         command.execute(input);
