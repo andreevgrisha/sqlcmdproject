@@ -22,23 +22,18 @@ public class Connect implements Command {
 
     @Override
     public void execute(String command) {
-        try {
-            String[] data = getCommandRefactored(command);
+        String[] data = getCommandRefactored(command);
 
-            if (data.length != getParameterLength()) {
-                throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length +
-                        " ,but you need " + getParameterLength());
-            }
-            String database = data[0];
-            String username = data[1];
-            String password = data[2];
-            dbManager.connect(database, username, password);
-            view.type("\u001B[34m" + "Success!" + "\u001B[0m");
-            view.type("Please enter your command! Type 'help' to see available commands.");
-        } catch (Exception e) {
-            dbManager.printError(e);
+        if (data.length != getParameterLength()) {
+            throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length +
+                    " ,but you need " + getParameterLength());
         }
-
+        String database = data[0];
+        String username = data[1];
+        String password = data[2];
+        dbManager.connect(database, username, password);
+        view.type("\u001B[34m" + "Success!" + "\u001B[0m");
+        view.type("Please enter your command! Type 'help' to see available commands.");
     }
 
     private int getParameterLength() {

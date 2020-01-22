@@ -16,6 +16,4 @@ public interface DataBaseManager {
     void updateTableData(String tableName, Data updatedValue, int id);
 
     boolean isConnected();
-
-     void printError(Exception e);
 }

@@ -162,14 +162,5 @@ public class JDBCDataBaseManager implements DataBaseManager {
         return connection != null;
     }
 
-    @Override
-    public void printError(Exception e) {
-        String message = e.getMessage();
-        if (e.getCause() != null) {
-            message += " " + e.getCause().getMessage();
-        }
-        System.out.println(("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!"));
-    }
-
 }
 

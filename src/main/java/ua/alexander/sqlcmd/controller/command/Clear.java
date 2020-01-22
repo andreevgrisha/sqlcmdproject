@@ -20,23 +20,18 @@ public class Clear implements Command {
 
     @Override
     public void execute(String command) {
-        try {
-            String[] data = command.split("[:]");
+        String[] data = command.split("[:]");
 
-            if (data.length != getParameterLength()) {
-                throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length +
-                        " ,but you need " + getParameterLength());
-            }
-            String tableName = data[1];
-            dbManager.clearTable(tableName);
-            view.type(String.format("Table %s was cleared successfully", tableName));
-        } catch (Exception ex) {
-            dbManager.printError(ex);
+        if (data.length  != getParameterLength()) {
+            throw new IllegalArgumentException("Something is missing... Quantity of parameters is " + data.length +
+                    " ,but you need " + getParameterLength());
         }
-
+        String tableName = data[1];
+        dbManager.clearTable(tableName);
+        view.type(String.format("Table '%s' was cleared successfully!", tableName));
     }
 
     private int getParameterLength() {
-        return COMMAND_SAMPLE.split("[:]").length;
+        return COMMAND_SAMPLE.split("[:]").length ;
     }
 }

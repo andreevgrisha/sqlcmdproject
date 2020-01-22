@@ -21,7 +21,6 @@ public class Find implements Command {
 
     @Override
     public void execute(String command) {
-        try {
             String[] data = command.split("[:]");
 
             if (data.length != getParameterLength()) {
@@ -37,9 +36,6 @@ public class Find implements Command {
                 Data[] tableData = dbManager.getTableData(tableName);
                 drawTable(tableData);
             }
-        } catch (Exception ex) {
-            dbManager.printError(ex);
-        }
     }
 
     private int getParameterLength() {

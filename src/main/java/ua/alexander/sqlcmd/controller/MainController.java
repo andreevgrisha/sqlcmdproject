@@ -41,12 +41,28 @@ public class MainController {
         while(true){
             String input = view.read();
             for(Command command : commands) {
+                try {
                     if (command.processAble(input)) {
                         command.execute(input);
                         break;
                     }
+                }catch(Exception ex){
+                    if(ex instanceof ExitException){
+                        throw ex;
+                    }
+                    printError(ex);
+                    break;
                 }
             }
-
         }
+
+    }
+
+    public void printError(Exception e) {
+        String message = e.getMessage();
+        if (e.getCause() != null) {
+            message += " " + e.getCause().getMessage();
+        }
+        System.out.println(("\u001B[31m" + "Failed, the reason is: " + message + "\u001B[0m" + "\nTry again!"));
+    }
 }
