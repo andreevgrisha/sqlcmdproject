@@ -20,6 +20,8 @@
                         <goal>copy-dependencies</goal>
                     </goals>
                     <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>     
                         <outputDirectory>${project.build.directory}/lib</outputDirectory>
                         <overWriteReleases>false</overWriteReleases>
                         <overWriteSnapshots>false</overWriteSnapshots>
