@@ -42,7 +42,7 @@
                   <manifest>
                     <addClasspath>true</addClasspath>
                     <classpathPrefix>lib/</classpathPrefix>
-                    <mainClass>ua.alexander.executable.ExecutableMavenJar</mainClass>
+                    <mainClass>ua.alexander.Main.executable.ExecutableMavenJar</mainClass>
                   </manifest>
                 </archive>
             </configuration>
