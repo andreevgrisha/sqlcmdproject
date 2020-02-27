@@ -42,7 +42,7 @@
                   <manifest>
                     <addClasspath>true</addClasspath>
                     <classpathPrefix>lib/</classpathPrefix>
-                    <mainClass>ua.alexander.Main</mainClass>
+                    <mainClass>ua.alexander.sqlcmd.Main</mainClass>
                   </manifest>
                 </archive>
             </configuration>
